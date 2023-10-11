@@ -1,10 +1,10 @@
-# Spiral AI - Legal Document Chatbot
+# Spiral AI - Research Document Chatbot
 
-Spiral AI is an end-to-end chatbot application that empowers users to upload their legal documents and utilize the platform to ask questions, seek information, and gain insights regarding their documents. It combines cutting-edge technologies to enhance document understanding and retrieval, making it a valuable tool for legal professionals, researchers, and anyone dealing with legal documents.
+Spiral AI is an end-to-end chatbot application that empowers users to upload their Research documents and utilize the platform to ask questions, seek information, and gain insights regarding their documents. It combines cutting-edge technologies to enhance document understanding and retrieval, making it a valuable tool for Research professionals, researchers, and anyone dealing with Research documents.
 
 ## Features
 
-- **Document Extraction**: Spiral AI extracts text content from uploaded legal documents, making them ready for analysis.
+- **Document Extraction**: Spiral AI extracts text content from uploaded Research documents, making them ready for analysis.
 
 - **Text Chunking**: The content is divided into manageable chunks with significant overlap to ensure seamless connectivity between the produced document segments.
 
@@ -12,7 +12,7 @@ Spiral AI is an end-to-end chatbot application that empowers users to upload the
 
 - **Storage**: The embedded vectors are stored for efficient retrieval and quick access, ensuring that users receive prompt responses to their queries.
 
-- **OpenAI Language Model (LLM)**: Users can query the document using OpenAI's Language Model (LLM), enabling natural language interaction with the legal document.
+- **OpenAI Language Model (LLM)**: Users can query the document using OpenAI's Language Model (LLM), enabling natural language interaction with the Research document.
 
 ## Getting Started
 
@@ -24,13 +24,13 @@ To get started with Spiral AI, follow these steps:
 
 3. **Add a .env File**: Create a new .env file and add your OPENAI_API_KEY.
    
-4. **Run the Application**: Launch the Spiral AI application and start uploading your legal documents. 
+4. **Run the Application**: Launch the Spiral AI application and start uploading your Research documents. 
 
 5. **Ask Questions**: Once your document is uploaded, use the chat interface to ask questions and receive insights.
 
 ## Usage
 
-1. Upload your legal document.
+1. Upload your Research document.
 
 2. Start a conversation by asking questions about the document's content.
 

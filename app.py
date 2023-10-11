@@ -12,6 +12,14 @@ from langchain.chains.question_answering import load_qa_chain
 from langchain.callbacks import get_openai_callback
 import os
 
+research_paper_keywords = ["research", "study", "methodology", "results", "conclusion", "references", "authors"]
+
+def is_research_paper(text):
+    # Check if the document contains any of the research paper keywords
+    for keyword in research_paper_keywords:
+        if keyword in text.lower():
+            return True
+    return False
 
 with st.sidebar:
     st.title("Spiral 🧬")
@@ -45,6 +53,8 @@ def main():
     
     st.header("💬 Chat with your Legal Document")
 
+    chat_history = []
+
     if pdf is not None:
         pdf_reader = PdfReader(pdf)
 
@@ -52,52 +62,48 @@ def main():
         for page in pdf_reader.pages:
             text += page.extract_text()
 
-        text_splitter = RecursiveCharacterTextSplitter(
+        if is_research_paper(text):
+            text_splitter = RecursiveCharacterTextSplitter(
             chunk_size = 1000,
             chunk_overlap = 200,
             length_function = len
-        )
-        chunks = text_splitter.split_text(text = text)
+            )
+            chunks = text_splitter.split_text(text = text)
 
-        store_name = pdf.name[:-4]
-        st.write(f'{store_name}')
+            store_name = pdf.name[:-4]
+            st.write(f'{store_name}')
 
-        if os.path.exists(f"{store_name}.pkl"):
-            with open(f"{store_name}.pkl", "rb") as f:
-                VectorStore = pickle.load(f)
+            if os.path.exists(f"{store_name}.pkl"):
+                with open(f"{store_name}.pkl", "rb") as f:
+                    VectorStore = pickle.load(f)
 
-        else:
-            embeddings = OpenAIEmbeddings()
-            VectorStore = FAISS.from_texts(chunks, embedding = embeddings)
+            else:
+                embeddings = OpenAIEmbeddings()
+                VectorStore = FAISS.from_texts(chunks, embedding = embeddings)
 
-            with open(f"{store_name}.pkl", "wb") as f:
-                pickle.dump(VectorStore, f)
+                with open(f"{store_name}.pkl", "wb") as f:
+                    pickle.dump(VectorStore, f)
+
+            if query := st.chat_input(placeholder="Ask any Question about your Legal Document:"):
+                chat_history.append({"role": "user", "content": query})
+                st.chat_message("user").write(query)
+
+                docs = VectorStore.similarity_search(query = query, k = 3)
+
+                llm = OpenAI()
+                chain = load_qa_chain(llm = llm, chain_type = "stuff")
+
+                with get_openai_callback() as cb:
+                    response = chain.run(input_documents=docs, question=query)
+                    print(cb)
+
+                chat_history.append({"role": "assistant", "content": response})
+                st.write(response)
         
-        if "chat_history" not in st.session_state:
-            st.session_state.chat_history = []
-
-        if query := st.chat_input(placeholder="Ask any Question about your Legal Document:"):
-            st.session_state.messages.append({"role": "user", "content": query})
-            st.chat_message("user").write(query)
-
-            docs = VectorStore.similarity_search(query = query, k = 3)
-
-            llm = OpenAI()
-            chain = load_qa_chain(llm = llm, chain_type = "stuff")
-
-            with get_openai_callback() as cb:
-                response = chain.run(input_documents=docs, question=query)
-                print(cb)
-
-            # Add the assistant's response to the chat
-            st.session_state.messages.append({"role": "assistant", "content": response})
-            st.write(response)
-    
-    for chat in st.session_state.chat_history:
-        if chat["role"] == "user":
-            st.chat_message("user").write(chat["content"])
+        
         else:
-            st.chat_message("assistant").write(chat["content"])
+            st.warning("This Document does not apper to be a Research Paper. Please upload a Research Paper.")
+    
 
 
 if __name__ == '__main__':

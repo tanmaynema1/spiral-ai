@@ -1,10 +1,12 @@
 # Spiral AI - Research Document Chatbot
 
-Spiral AI is an end-to-end chatbot application that empowers users to upload their Research documents and utilize the platform to ask questions, seek information, and gain insights regarding their documents. It combines cutting-edge technologies to enhance document understanding and retrieval, making it a valuable tool for Research professionals, researchers, and anyone dealing with Research documents.
+Spiral AI is an end-to-end chatbot application that uses Retrieval Augmentated Generation that empowers users to upload their Research documents and utilize the platform to ask questions, seek information, and gain insights regarding their documents. It combines cutting-edge technologies to enhance document understanding and retrieval, making it a valuable tool for Research professionals, researchers, and anyone dealing with Research documents.
 
 ## Features
 
 - **Document Extraction**: Spiral AI extracts text content from uploaded Research documents, making them ready for analysis.
+
+- **Document Verification**: Spiral AI uses the extracted text content to verify if the document is a Research article or not.
 
 - **Text Chunking**: The content is divided into manageable chunks with significant overlap to ensure seamless connectivity between the produced document segments.
 
